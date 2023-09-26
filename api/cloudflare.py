@@ -1,10 +1,10 @@
-import os
 import requests
 
 import logging
 
 # Load environment variables from the .env file
 from dotenv import load_dotenv
+from tld import get_fld
 
 load_dotenv()
 
@@ -15,11 +15,10 @@ logger = logging.getLogger(__name__)
 
 class CloudflareAPI:
 
-    # Get the Cloudflare API token from the environment variables
-    api_token = os.getenv("CLOUDFLARE_API_TOKEN")
+    api_token = None
 
-    def __init__(self):
-        pass
+    def __init__(self, token=None):
+        self.api_token = token
 
     def available_zones(self):
         # Construct the API URL to get available zones
@@ -47,13 +46,12 @@ class CloudflareAPI:
                     return zones
                 else:
                     logger.info("No zones found in your Cloudflare account.")
-                    return []
             else:
                 logger.error(f"Error: {response.status_code} - {response.text}")
-                return []
 
         except Exception as e:
             logger.error(f"An error occurred: {str(e)}")
+        return []
 
     def resolve(self, domain_name, zone_id):
         # Construct the API URL
@@ -83,3 +81,12 @@ class CloudflareAPI:
                 logger.error(f"Error: {response.status_code} - {response.text}")
         except Exception as e:
             logger.error(f"An error occurred: {str(e)}")
+
+    def query(self, domain_name):
+        # Extract the top-level domain (TLD) from the input domain name
+        tld = get_fld(f"https://{domain_name}")
+
+        for zone in self.available_zones():
+            if zone['name'] == tld:
+                ip_address = self.resolve(domain_name=domain_name, zone_id=zone['id'])
+                return ip_address
