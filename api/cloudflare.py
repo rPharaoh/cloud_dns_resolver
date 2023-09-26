@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.CRITICAL)
 logger = logging.getLogger(__name__)
 
 
-class Cloudflare:
+class CloudflareAPI:
 
     # Get the Cloudflare API token from the environment variables
     api_token = os.getenv("CLOUDFLARE_API_TOKEN")
