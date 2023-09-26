@@ -7,6 +7,7 @@ import logging
 # Load environment variables from the .env file
 from dotenv import load_dotenv
 from tld import get_fld
+from .common import APIBase
 
 load_dotenv()
 
@@ -15,7 +16,7 @@ logging.basicConfig(level=logging.NOTSET)
 logger = logging.getLogger(__name__)
 
 
-class AWSAPI:
+class AWSAPI(APIBase):
 
     aws_access_key_id = os.getenv("AWS_ACCESS_KEY")
     aws_secret_access_key = os.getenv("AWS_SECRET_KEY")
