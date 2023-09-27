@@ -62,4 +62,5 @@ python resolver.py --domain example.com
 
 ## Later features
 - Adding more providers like GoDaddy, HostGator, Google Cloud
-- Make the script as system tool to automatically resolve the ip address with commands like ``` ssh -i key.pem user@example.com ```
+- Make the script as system tool to automatically resolve the ip address with commands like ``` ssh -i key.pem user@example.com ``` a local DNS for short
+- Adding caching for hosted zones, that had been resolved before and pass the other domains to a real DNS
